@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Understanding JavaScript's Capture</title>
+</head>
+<body class="bod">
+
+  <div class="one">
+    <div class="two">
+      <div class="three">
+      </div>
+    </div>
+  </div>
+
+<style>
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after { 
+    box-sizing: inherit; 
+  }
+
+  div {
+    width: 100%;
+    padding: 100px;
+  }
+
+  .one {
+    background: thistle;
+  }
+
+  .two {
+    background: mistyrose;
+  }
+
+  .three {
+    background: coral;
+  }
+</style>
+
+<button>Test</button>
+<script>
+
+  const divs = document.querySelectorAll('div');
+  const button = document.querySelector('button');
+
+  function logText(e) {
+    console.log(this.classList.value);
+    e.stopPropagation();  // stops bubbling
+  }
+
+  document.body.addEventListener('click', logText);
+
+  divs.forEach(div => div.addEventListener('click', logText, { 
+    capture: false,
+    once: true
+    })); //capture: true would get the events to fire on their way down - false is the default value
+    // once: true listens for a click and hen unbinds itself == same as a removeEventListener . only lets the click listener run once, can be really useful with a button like for a store checkout
+
+    button.addEventListener('click', () => {
+      console.log('click!!!');
+    }, {
+      once: true
+    })
+
+</script>
+</body>
+</html>
